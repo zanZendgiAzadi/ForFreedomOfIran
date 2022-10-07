@@ -1,6 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.AzadiActivity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="fontFamily">@font/iranyekan_regular</item>
+        <item name="android:fontFamily">@font/iranyekan_regular</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_200</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
