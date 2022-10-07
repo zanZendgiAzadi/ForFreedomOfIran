@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.google.android.exoplayer2.ExoPlayer
@@ -14,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,12 +28,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         kronosClock = AndroidClockFactory.createKronosClock(applicationContext)
-        kronosClock.syncInBackground()
-
         val mediaUri = Uri.parse("asset:///azadi.mp3")
         val mediaItem = MediaItem.fromUri(mediaUri)
         player.addMediaItem(mediaItem)
         player.prepare()
+
+        if (isServerTimeSyncedBefore().not()) {
+            if (kronosClock.sync()) play()
+        } else {
+            makeMusicSync()
+        }
         player.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(state: Int) {
                 if (state == Player.STATE_ENDED) {
@@ -61,27 +65,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun makeMusicSync() {
-        GlobalScope.launch {
-            delay(1000)
+        GlobalScope.launch(Dispatchers.Main) {
             if (isServerTimeSyncedBefore()) {
-                kronosClock.syncInBackground()
                 play()
+                return@launch
             } else if (kronosClock.sync()) {
                 play()
+                return@launch
             } else {
                 makeMusicSync()
+                Toast.makeText(
+                    this@MainActivity,
+                    getString(R.string.enable_internet),
+                    Toast.LENGTH_SHORT
+                ).show()
+                delay(4000)
             }
         }
     }
 
-    private suspend fun play() {
-        withContext(Dispatchers.Main) {
-            findViewById<TextView>(R.id.txtLoading).isVisible = false
-            findViewById<ProgressBar>(R.id.progressBar).isVisible = false
-            val position = kronosClock.getCurrentTimeMs() % player.duration
-            player.seekTo(position)
-            player.play()
-        }
+    private fun play() {
+        val position = kronosClock.getCurrentTimeMs() % player.duration
+        player.seekTo(position)
+        player.play()
+        findViewById<TextView>(R.id.txtLoading).isVisible = false
+        findViewById<ProgressBar>(R.id.progressBar).isVisible = false
     }
 
     private fun isServerTimeSyncedBefore() =

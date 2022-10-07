@@ -2,4 +2,5 @@
     <string name="app_name">Azadi</string>
     <string name="txt_waiting">لطفا صبر کنید</string>
     <string name="freedom_description">صدای آزاد آزادی خواهان، در کنار هم شنیده خواهیم شد.</string>
+    <string name="enable_internet">لطفا برای هماهنگ شدن زمان, اینترنت خودتونو وصل کنید</string>
 </resources>

@@ -3,7 +3,7 @@ package com.iran.azadi.internal
 import java.util.concurrent.TimeUnit
 
 object DefaultParam {
-    val NTP_HOSTS = listOf("0.pool.ntp.org", "1.pool.ntp.org", "2.pool.ntp.org", "3.pool.ntp.org")
+    val NTP_HOSTS = listOf("129.6.15.28","pool.ntp.org","0.pool.ntp.org", "1.pool.ntp.org", "2.pool.ntp.org", "3.pool.ntp.org")
     // Sync with NTP if the cache is older than this value
     val CACHE_EXPIRATION_MS = TimeUnit.MINUTES.toMillis(1)
     // Sync with NTP only after MIN_WAIT_TIME_BETWEEN_SYNC_MS regardless of success or failure
