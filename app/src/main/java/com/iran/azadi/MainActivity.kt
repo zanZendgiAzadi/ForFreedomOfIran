@@ -2,7 +2,10 @@ package com.iran.azadi
 
 import android.net.Uri
 import android.os.Bundle
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -73,6 +76,8 @@ class MainActivity : AppCompatActivity() {
 
     private suspend fun play() {
         withContext(Dispatchers.Main) {
+            findViewById<TextView>(R.id.txtLoading).isVisible = false
+            findViewById<ProgressBar>(R.id.progressBar).isVisible = false
             val position = kronosClock.getCurrentTimeMs() % player.duration
             player.seekTo(position)
             player.play()
