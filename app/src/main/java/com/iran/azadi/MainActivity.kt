@@ -50,8 +50,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onBackPressed() {
+        super.onBackPressed()
         player.playWhenReady = false
     }
 
