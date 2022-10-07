@@ -12,15 +12,6 @@ android {
     namespace 'com.iran.azadi'
     compileSdk 33
 
-    signingConfigs {
-
-        release {
-            keyAlias 'myalias'
-            keyPassword 'baghersamadi0427'
-            storeFile file('mykeystore.keystore')
-            storePassword 'baghersamadi0427'
-        }
-    }
 
     defaultConfig {
         applicationId "com.iran.azadi"
@@ -35,7 +26,6 @@ android {
             minifyEnabled false
             shrinkResources false
             debuggable false
-            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
