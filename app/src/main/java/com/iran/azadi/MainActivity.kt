@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var kronosClock: KronosClock
+    private lateinit var kronosClock: KronosClock
     private val player by lazy {
         ExoPlayer.Builder(this)
             .build()
@@ -27,11 +27,10 @@ class MainActivity : AppCompatActivity() {
         kronosClock = AndroidClockFactory.createKronosClock(applicationContext)
         kronosClock.syncInBackground()
 
-        val firstVideoUri = Uri.parse("asset:///azadi.mp3")
-        val firstItem = MediaItem.fromUri(firstVideoUri)
-        player.addMediaItem(firstItem)
+        val mediaUri = Uri.parse("asset:///azadi.mp3")
+        val mediaItem = MediaItem.fromUri(mediaUri)
+        player.addMediaItem(mediaItem)
         player.prepare()
-        makeMusicSync()
         player.addListener(object : Player.Listener {
             override fun onPlaybackStateChanged(state: Int) {
                 if (state == Player.STATE_ENDED) {
@@ -39,6 +38,23 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (player.isPlaying.not()) {
+            makeMusicSync()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        player.playWhenReady = false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        player.release()
     }
 
     private fun makeMusicSync() {
